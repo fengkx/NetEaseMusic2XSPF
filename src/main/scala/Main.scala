@@ -13,7 +13,11 @@ object Main extends App {
 
     val output = NetEase2XSPF.toXSPF(playListUrl, songName => println("[working on] "+  songName))
     XML.save(fileName, output, "UTF-8", true, null)
-    new scala.xml.PrettyPrinter(24, 4).format(output)
+
+    val stdOuput = (output \\ "track").toList.foldLeft("")((acc, item) => {
+      acc + (item \ "title").text + " - " + (item \ "creator").text + "\n"
+    })
+    println(stdOuput)
   }
 }
 
